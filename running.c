@@ -2,8 +2,8 @@
 #include "running.h"
 
 
-void last_bits(short int num, int *a) { //переводит опцию(одну букву) в opcode
-    int b = 4;                          //и записывает в бинарное представление всей инструкции
+void last_bits(short int num, int *a) { //РїРµСЂРµРІРѕРґРёС‚ РѕРїС†РёСЋ(РѕРґРЅСѓ Р±СѓРєРІСѓ) РІ opcode
+    int b = 4;                          //Рё Р·Р°РїРёСЃС‹РІР°РµС‚ РІ Р±РёРЅР°СЂРЅРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ РІСЃРµР№ РёРЅСЃС‚СЂСѓРєС†РёРё
     for (int i = 0; i < 5; ++i) {
         int bit = (num >> i) & 1;
         a[b] = bit;
@@ -11,8 +11,8 @@ void last_bits(short int num, int *a) { //переводит опцию(одну букву) в opcode
     }
 }
 
-void fromDecToBin(int num, int *a, bool flag) { //переводит число из десятичной системы в двоичную
-    if (num) {                                  //и записывает в 11 разрядов бин представления инструкции
+void fromDecToBin(int num, int *a, bool flag) { //РїРµСЂРµРІРѕРґРёС‚ С‡РёСЃР»Рѕ РёР· РґРµСЃСЏС‚РёС‡РЅРѕР№ СЃРёСЃС‚РµРјС‹ РІ РґРІРѕРёС‡РЅСѓСЋ
+    if (num) {                                  //Рё Р·Р°РїРёСЃС‹РІР°РµС‚ РІ 11 СЂР°Р·СЂСЏРґРѕРІ Р±РёРЅ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ РёРЅСЃС‚СЂСѓРєС†РёРё
         int bit;
         if (flag) bit = 15;
         else bit = 10;
@@ -25,7 +25,7 @@ void fromDecToBin(int num, int *a, bool flag) { //переводит число из десятичной 
     }
 }
 
-int num_for_shift(struct Command command) { //определяет количество сдвигов для опций L и R
+int num_for_shift(struct Command command) { //РѕРїСЂРµРґРµР»СЏРµС‚ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРґРІРёРіРѕРІ РґР»СЏ РѕРїС†РёР№ L Рё R
     int a[12] = {0};
     int shift_len = 0;
     fromDecToBin(command.address, a, 0);
@@ -37,24 +37,24 @@ int num_for_shift(struct Command command) { //определяет количество сдвигов для 
     return shift_len;
 }
 
-void traslation(struct Command command, int *a) { //преобразовывает инструкцию в 17 битное двоичное число
+void traslation(struct Command command, int *a) { //РїСЂРµРѕР±СЂР°Р·РѕРІС‹РІР°РµС‚ РёРЅСЃС‚СЂСѓРєС†РёСЋ РІ 17 Р±РёС‚РЅРѕРµ РґРІРѕРёС‡РЅРѕРµ С‡РёСЃР»Рѕ
     for (int i = 0; i < 17; ++i) {
         a[i] = 0;
     }
     char *alph = "PQWERTYUIOJJSZKKKFFDDHNMMLXGABCV";
-    for (short int j = 0; j < 32; ++j) {  //разряды 0-4
+    for (short int j = 0; j < 32; ++j) {  //СЂР°Р·СЂСЏРґС‹ 0-4
         if (command.instruction == alph[j]) {
             last_bits(j, a);
             break;
         }
     }
-    fromDecToBin(command.address, a, 1); //разряды 5-15
-    if (command.length == 'S') a[16] = 0; else a[16] = 1; //разряд 16
+    fromDecToBin(command.address, a, 1); //СЂР°Р·СЂСЏРґС‹ 5-15
+    if (command.length == 'S') a[16] = 0; else a[16] = 1; //СЂР°Р·СЂСЏРґ 16
 }
 
-void instruction_A(int *line, char len, int which, int *acc) { //прибавляет строку line к аккамулятору
-    int carry = 0;                                              //короткое слово,если len == 'S' и длинное если наоборот
-    int intermid = 0;                                           //which oпределяет какую часть line приб. при len==S
+void instruction_A(int *line, char len, int which, int *acc) { //РїСЂРёР±Р°РІР»СЏРµС‚ СЃС‚СЂРѕРєСѓ line Рє Р°РєРєР°РјСѓР»СЏС‚РѕСЂСѓ
+    int carry = 0;                                              //РєРѕСЂРѕС‚РєРѕРµ СЃР»РѕРІРѕ,РµСЃР»Рё len == 'S' Рё РґР»РёРЅРЅРѕРµ РµСЃР»Рё РЅР°РѕР±РѕСЂРѕС‚
+    int intermid = 0;                                           //which oРїСЂРµРґРµР»СЏРµС‚ РєР°РєСѓСЋ С‡Р°СЃС‚СЊ line РїСЂРёР±. РїСЂРё len==S
     if (len == 'S') {
         if (which & 1) {
             for (int i = 16; i >= 0; --i) {
@@ -78,10 +78,10 @@ void instruction_A(int *line, char len, int which, int *acc) { //прибавляет стро
     }
 }
 
-void instruction_S(int *line, char len, int which, int *acc) { //вычитает строку line из аккамулятора
+void instruction_S(int *line, char len, int which, int *acc) { //РІС‹С‡РёС‚Р°РµС‚ СЃС‚СЂРѕРєСѓ line РёР· Р°РєРєР°РјСѓР»СЏС‚РѕСЂР°
     int tmp_line[35] = {
-            0};    //тут будет доп код               //короткое слово,если len == 'S' и длинное если наоборот
-    int tmp_one[35] = {0};   //доп единица                     //which oпределяет какую часть line вычит. при len==S
+            0};    //С‚СѓС‚ Р±СѓРґРµС‚ РґРѕРї РєРѕРґ               //РєРѕСЂРѕС‚РєРѕРµ СЃР»РѕРІРѕ,РµСЃР»Рё len == 'S' Рё РґР»РёРЅРЅРѕРµ РµСЃР»Рё РЅР°РѕР±РѕСЂРѕС‚
+    int tmp_one[35] = {0};   //РґРѕРї РµРґРёРЅРёС†Р°                     //which oРїСЂРµРґРµР»СЏРµС‚ РєР°РєСѓСЋ С‡Р°СЃС‚СЊ line РІС‹С‡РёС‚. РїСЂРё len==S
 
     if (len == 'S') {
         if (which & 1) {
@@ -89,8 +89,8 @@ void instruction_S(int *line, char len, int which, int *acc) { //вычитает строку
             for (int i = 0; i < 17; ++i) {
                 tmp_line[i] = !line[i];
             }
-            instruction_A(tmp_one, 'S', 1, tmp_line); //складываю единицу с обратным кодом line
-            instruction_A(tmp_line, 'S', 1, acc);     //складываю доп код и акк
+            instruction_A(tmp_one, 'S', 1, tmp_line); //СЃРєР»Р°РґС‹РІР°СЋ РµРґРёРЅРёС†Сѓ СЃ РѕР±СЂР°С‚РЅС‹Рј РєРѕРґРѕРј line
+            instruction_A(tmp_line, 'S', 1, acc);     //СЃРєР»Р°РґС‹РІР°СЋ РґРѕРї РєРѕРґ Рё Р°РєРє
         } else {
             tmp_one[34] = 1;
             for (int i = 18; i < 35; ++i) {
@@ -116,7 +116,7 @@ void instruction_S(int *line, char len, int which, int *acc) { //вычитает строку
     }
 }
 
-void instruction_H(int *line, char len, int which, int *multiplier) { //загружает строку line в умножитель
+void instruction_H(int *line, char len, int which, int *multiplier) { //Р·Р°РіСЂСѓР¶Р°РµС‚ СЃС‚СЂРѕРєСѓ line РІ СѓРјРЅРѕР¶РёС‚РµР»СЊ
     if (len == 'S') {
         if (which & 1) {
             for (int i = 0; i < 17; ++i) {
@@ -139,7 +139,7 @@ void instruction_H(int *line, char len, int which, int *multiplier) { //загружае
 
 }
 
-void instruction_T(int *line, char len, int which, int *acc) { //выгружает значение акк в line и очищает его
+void instruction_T(int *line, char len, int which, int *acc) { //РІС‹РіСЂСѓР¶Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ Р°РєРє РІ line Рё РѕС‡РёС‰Р°РµС‚ РµРіРѕ
     if (len == 'S') {
         for (int i = 0; i < 17; ++i) {
             if (which & 1)
@@ -156,7 +156,7 @@ void instruction_T(int *line, char len, int which, int *acc) { //выгружает значе
     }
 }
 
-void instruction_U(int *line, char len, int which, int *acc) { //выгружает значение акк в line
+void instruction_U(int *line, char len, int which, int *acc) { //РІС‹РіСЂСѓР¶Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ Р°РєРє РІ line
     if (len == 'S') {
         for (int i = 0; i < 17; ++i) {
             if (which & 1)
@@ -171,8 +171,8 @@ void instruction_U(int *line, char len, int which, int *acc) { //выгружает значе
 }
 
 void
-instruction_C(int *line, char len, int which, int *multiplier, int *acc) { //делает логическое 'и' умножителя и line
-    int acc_tmp[35] = {0};                                                     //результат записывает в акк
+instruction_C(int *line, char len, int which, int *multiplier, int *acc) { //РґРµР»Р°РµС‚ Р»РѕРіРёС‡РµСЃРєРѕРµ 'Рё' СѓРјРЅРѕР¶РёС‚РµР»СЏ Рё line
+    int acc_tmp[35] = {0};                                                     //СЂРµР·СѓР»СЊС‚Р°С‚ Р·Р°РїРёСЃС‹РІР°РµС‚ РІ Р°РєРє
 
     if (len == 'S') {
         for (int i = 0; i < 17; ++i) {
@@ -195,7 +195,7 @@ instruction_C(int *line, char len, int which, int *multiplier, int *acc) { //дел
 
 }
 
-void instruction_R(int shift_len, int *acc) { //сдвиг вправо
+void instruction_R(int shift_len, int *acc) { //СЃРґРІРёРі РІРїСЂР°РІРѕ
     for (int i = 70 - shift_len; i >= shift_len; --i) {
         acc[i + shift_len] = acc[i];
 
@@ -205,7 +205,7 @@ void instruction_R(int shift_len, int *acc) { //сдвиг вправо
     }
 }
 
-void instruction_L(int shift_len, int *acc) { //сдвиг в лево
+void instruction_L(int shift_len, int *acc) { //СЃРґРІРёРі РІ Р»РµРІРѕ
     for (int i = 0; i <= 70 - shift_len; ++i) {
         acc[i] = acc[i + shift_len];
     }
@@ -237,7 +237,7 @@ void instruction_O(FILE *out,int *line,int which) {
 
 
 
-void instruction_Y(int *acc) { //округляет значение акк до 34 бит
+void instruction_Y(int *acc) { //РѕРєСЂСѓРіР»СЏРµС‚ Р·РЅР°С‡РµРЅРёРµ Р°РєРє РґРѕ 34 Р±РёС‚
     if (acc[35] == 0) {
         for (int i = 35; i <71 ; ++i) {
             acc[i]=0;
@@ -255,16 +255,15 @@ void instruction_Y(int *acc) { //округляет значение акк до 34 бит
             carry = (acc[i] & carry) | (line[i] & carry) | (acc[i] & line[i]);
             acc[i] = intermid;
         }
-        //что тут со знаком???
     }
 }
 
 void running(struct Command *command, int len, FILE *out) {
-    int **binary_command; //массив, внутри которого бинарвый эквивалент обычных инструкций из command
+    int **binary_command; //РјР°СЃСЃРёРІ, РІРЅСѓС‚СЂРё РєРѕС‚РѕСЂРѕРіРѕ Р±РёРЅР°СЂРІС‹Р№ СЌРєРІРёРІР°Р»РµРЅС‚ РѕР±С‹С‡РЅС‹С… РёРЅСЃС‚СЂСѓРєС†РёР№ РёР· command
     int multiplier[35] = {0};
     int acc[71] = {0};
     int a[17] = {0};
-    //каждая строка состоит их 2 инструкций как в Long Tank
+    //РєР°Р¶РґР°СЏ СЃС‚СЂРѕРєР° СЃРѕСЃС‚РѕРёС‚ РёС… 2 РёРЅСЃС‚СЂСѓРєС†РёР№ РєР°Рє РІ Long Tank
     binary_command = (int **) calloc((command[0].address - 31) / 2, sizeof(int *));
     for (int l = 0; l < (command[0].address - 31) / 2; ++l) {
         binary_command[l] = (int *) calloc(35, sizeof(int));
@@ -275,8 +274,8 @@ void running(struct Command *command, int len, FILE *out) {
         exit(1);
     }
 
-    int tmp = 1; //счётчик для заполнения
-    for (int k = 0; k < (command[0].address - 31) / 2; ++k) {   //заполняю его
+    int tmp = 1; //СЃС‡С‘С‚С‡РёРє РґР»СЏ Р·Р°РїРѕР»РЅРµРЅРёСЏ
+    for (int k = 0; k < (command[0].address - 31) / 2; ++k) {   //Р·Р°РїРѕР»РЅСЏСЋ РµРіРѕ
         traslation(command[tmp], a);
         for (int i = 18; i < 35; ++i) {
             binary_command[k][i] = a[i - 18];
@@ -291,7 +290,7 @@ void running(struct Command *command, int len, FILE *out) {
     }
 
     bool debug = false;
-    int i = 1; //выполняю инструкции со второй до точки останова, счётчик
+    int i = 1; //РІС‹РїРѕР»РЅСЏСЋ РёРЅСЃС‚СЂСѓРєС†РёРё СЃРѕ РІС‚РѕСЂРѕР№ РґРѕ С‚РѕС‡РєРё РѕСЃС‚Р°РЅРѕРІР°, СЃС‡С‘С‚С‡РёРє
     while (i != len) {
         switch (command[i].instruction) {
             case 'A':
@@ -364,15 +363,15 @@ void running(struct Command *command, int len, FILE *out) {
             }
             printf("\nLine %d Instruction %c%d%c", command[i - 1].line, command[i - 1].instruction,
                    command[i - 1].address, command[i - 1].length);
-            print_output(out, command, binary_command, acc, 0, multiplier); //печатаю все необходимые данные
-            int key; //для возможного нажатия ENTER
-            char comand[10]; // в противном случае сюда будет записана команда
+            print_output(out, command, binary_command, acc, 0, multiplier); //РїРµС‡Р°С‚Р°СЋ РІСЃРµ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РґР°РЅРЅС‹Рµ
+            int key; //РґР»СЏ РІРѕР·РјРѕР¶РЅРѕРіРѕ РЅР°Р¶Р°С‚РёСЏ ENTER
+            char comand[10]; //РІ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ СЃСЋРґР° Р±СѓРґРµС‚ Р·Р°РїРёСЃР°РЅР° РєРѕРјР°РЅРґР°
             while (1) {
                 key = getc(stdin);
                 if (key == 10) break;
-                ungetc(key, stdin); //возвращаю символ в потом, чтобы потом считать всё слово
+                ungetc(key, stdin); //РІРѕР·РІСЂР°С‰Р°СЋ СЃРёРјРІРѕР» РІ РїРѕС‚РѕРє, С‡С‚РѕР±С‹ РїРѕС‚РѕРј СЃС‡РёС‚Р°С‚СЊ РІСЃС‘ СЃР»РѕРІРѕ
                 scanf(" %s", comand);
-                fflush(stdin); //очистка буфера
+                fflush(stdin); //РѕС‡РёСЃС‚РєР° Р±СѓС„РµСЂР°
                 if (!strcmp(comand, "stop")) {
                     printf("Enforced program termination");
                     fclose(out);
@@ -393,4 +392,6 @@ void running(struct Command *command, int len, FILE *out) {
     free(binary_command);
     free(command);
 }
+
+
 

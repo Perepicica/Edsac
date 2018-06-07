@@ -21,8 +21,7 @@ int from_instr_to_dec(int *line, int which) {
     return m;
 }
 
-void
-print_output(FILE *out, struct Command *command, int **binary_command, int *acc, int end_prog, int *multiplier) {
+void print_output(FILE *out, struct Command *command, int **binary_command, int *acc, int end_prog, int *multiplier) {
 
     //во всей функции печать проверяется на условие окончания программы
     // если true всё печатается в выходной файл else в консоль (debug)

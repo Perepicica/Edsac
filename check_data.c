@@ -1,4 +1,4 @@
-#include "main.h"
+#include "input.h"
 
 bool check_instruction(char option, int which) { //проверка корректности введенных опций
     char *alph_first_check = "ASHVNTUCRLEGIOFXYZPQWYJKDMB";  //общий случай для всех возможных команд

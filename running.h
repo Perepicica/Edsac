@@ -1,7 +1,7 @@
 #ifndef EDSAC_RUNNING_H
 #define EDSAC_RUNNING_H
 
-#include "main.h"
+#include "input.h"
 
 void print_output(FILE*out,struct Command *command,int ** binary_command,int *acc,int end_prog,int *multiplier);
 void last_bits(short int num,int*a);

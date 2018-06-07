@@ -3,4 +3,4 @@ project(Edsac)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Edsac main.h input.c running.c running.h chech_data.c out.c)
+add_executable(Edsac input.h running.h check_data.c output.c input.c running.c)
