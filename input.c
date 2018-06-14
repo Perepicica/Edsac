@@ -16,6 +16,10 @@ int main(int argc, char *argv[]) {
         about_instructions();  //описание всех опций EDSAC
         exit(1);
     }
+    if (argc == 2 ) {
+        printf("Incorrect name of argument");
+        exit(1);
+    }
 
     if (argc == 3) {
         in = fopen(argv[1], " rt");
@@ -25,7 +29,7 @@ int main(int argc, char *argv[]) {
             exit(10);
         }
         if (out == NULL) {
-            printf("Incorrect path to output file");
+            printf("Incorrect path to output  %s", argv[2]);
         }
     }
 
